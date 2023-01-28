@@ -1,0 +1,1020 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "challenge6",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Auth Management API Collection"
+    },
+    {
+      "name": "Cars",
+      "description": "Cars Management API Collection"
+    }
+  ],
+  "paths": {
+    "/api/auth//login":{
+        "post":{
+            "tags": [
+                "Auth"
+            ],
+            "requestBody":{
+                "description": "API login",
+                "required": true,
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "type": "object",
+                      "properties": {
+                        "email":{
+                          "type": "email",
+                          "example": "muelcacaca@gmail.com"
+                        },
+                        "password":{
+                          "type": "password",
+                          "example": "secretcacaca"
+                        }
+                      }
+                    }
+                  }
+                }
+            },
+            "responses": {
+            "200": {
+            "description": "login successfully",
+            "schema": "#/components/schemas/User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "example": "muel"
+                        },
+                        "email": {
+                          "type": "email",
+                          "example": "muelcacacaca@gmail.com"
+                        },
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjY2NDU2MjM0fQ.Oy_7IiQfBNAxEAsISYBFbwUaOBC7NEjePn2kUH7TM54"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong Password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Wrong Password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "requestBody": {
+          "description": "successful registration",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "muel"
+                  },
+                  "email": {
+                    "type": "email",
+                    "example": "muelcacaca123@gmail.com"
+                  },
+                  "password": {
+                    "type": "password",
+                    "example": "secretcacaca123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New user registration successfully created",
+            "schema": "#/components/schemas/User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newUser": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "muel"
+                            },
+                            "email": {
+                              "type": "email",
+                              "example": "muelcacaca123@gmail.com"
+                            },
+                            "password": {
+                              "type": "password",
+                              "example": "$2b$10$0zD2nVBccJRxEtQMtOhVgOyQCNDEXk8WsxD12Zp0KKLQtshFMICXy"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-23T04:59:44.628Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-23T04:59:44.628Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Minimum password not enough",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "minimum password length must be 8 character"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "email already exist!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "email already exist!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/makeAdmin/{id}": {
+      "put": {
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Make user as admin",
+            "schema": "#/components/schemas/Auth",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "successfully made admin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "can only be accessed by admin and super admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "can only be accessed by admin and super admin"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "when the user is already an admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "id 4 already admin"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/": {
+      "post": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "create new car data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "bmw"
+                  },
+                  "price": {
+                    "type": "string",
+                    "example": "100"
+                  },
+                  "size": {
+                    "type": "string",
+                    "example": "small"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success created new car",
+            "schema": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": "6"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "bmw"
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 100
+                            },
+                            "size": {
+                              "type": "string",
+                              "example": "small"
+                            },
+                            "isActive": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "historyId": {
+                              "type": "integer",
+                              "example": 6
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-23T07:55:25.688Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-23T07:55:25.688Z"
+                            },
+                            "history": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 6
+                                },
+                                "createdBy": {
+                                  "type": "string",
+                                  "example": "muel"
+                                },
+                                "updatedBy": {
+                                  "type": "string",
+                                  "example": "muel"
+                                },
+                                "deletedBy": {
+                                  "type": "string",
+                                  "example": "muel"
+                                },
+                                "createdAt": {
+                                  "type": "date",
+                                  "example": "2022-10-23T07:55:25.688Z"
+                                },
+                                "updatedAt": {
+                                  "type": "date",
+                                  "example": "2022-10-23T07:55:25.688Z"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "can only be accessed by admin and super admin",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "fail"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "can only be accessed by admin and super admin"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+       "get": {
+        "tags": [
+          "Cars"
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success created new product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": "6"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "bmw"
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 1000
+                            },
+                            "size": {
+                              "type": "string",
+                              "example": "large"
+                            },
+                            "isActive": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "historyId": {
+                              "type": "integer",
+                              "example": 6
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-23T08:07:39.777Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-23T07:55:25.688Z"
+                            },
+                            "history": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 6
+                                },
+                                "createdBy": {
+                                  "type": "string",
+                                  "example": "muel"
+                                },
+                                "updatedBy": {
+                                  "type": "string",
+                                  "example": "muel"
+                                },
+                                "deletedBy": {
+                                  "type": "string",
+                                  "example": "muel"
+                                },
+                                "createdAt": {
+                                  "type": "date",
+                                  "example": "2022-10-23T07:55:25.547Z"
+                                },
+                                "updatedAt": {
+                                  "type": "date",
+                                  "example": "2022-10-23T08:07:38.721Z"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "can only be accessed by admin and super admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "can only be accessed by admin and super admin"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/member": {
+      "get": {
+        "tags": [
+          "Cars"
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success created new product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": "6"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "bmw"
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 1000
+                            },
+                            "size": {
+                              "type": "string",
+                              "example": "large"
+                            },
+                            "isActive": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-23T08:07:39.777Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-23T07:55:25.688Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cars/{id}": {
+      "put": {
+        "tags": [
+          "Cars"
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "requestBody": {
+          "description": "update car",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "bmw"
+                  },
+                  "price": {
+                    "type": "string",
+                    "example": "1000"
+                  },
+                  "size": {
+                    "type": "string",
+                    "example": "large"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "update car",
+            "schema": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "data success updated"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": "6"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "bmw"
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 1000
+                            },
+                            "size": {
+                              "type": "string",
+                              "example": "large"
+                            },
+                            "isActive": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "historyId": {
+                              "type": "integer",
+                              "example": 6
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-23T08:07:39.777Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-23T07:55:25.688Z"
+                            },
+                            "history": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 6
+                                },
+                                "createdBy": {
+                                  "type": "string",
+                                  "example": "muel"
+                                },
+                                "updatedBy": {
+                                  "type": "string",
+                                  "example": "muel"
+                                },
+                                "deletedBy": {
+                                  "type": "string",
+                                  "example": "muel"
+                                },
+                                "createdAt": {
+                                  "type": "date",
+                                  "example": "2022-10-23T07:55:25.547Z"
+                                },
+                                "updatedAt": {
+                                  "type": "date",
+                                  "example": "2022-10-23T08:07:38.721Z"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cars"
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "delete car data",
+            "schema": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "data success deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Auth": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "heri"
+          },
+          "email": {
+            "type": "string",
+            "example": "muelcacaca@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": " $2b$10$gMU2BM96.q2IwSLQCo90HewOeKbuWN2FQ1wuLpC03IgCYXTlq1iyi"
+          },
+
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-10-21 15:45:30.112+07"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-10-21 15:45:30.112+07"
+          }
+        }
+      },
+      "Cars": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "6"
+          },
+          "name": {
+            "type": "string",
+            "example": "bmw"
+          },
+          "price": {
+            "type": "integer",
+            "example": 1000
+          },
+          "size": {
+            "type": "string",
+            "example": "large"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "historyId": {
+            "type": "integer",
+            "example": 6
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-10-23T08:07:39.777Z"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-10-23T07:55:25.688Z"
+          },
+          "history": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 6
+              },
+              "createdBy": {
+                "type": "string",
+                "example": "muel"
+              },
+              "updatedBy": {
+                "type": "string",
+                "example": "muel"
+              },
+              "deletedBy": {
+                "type": "string",
+                "example": "muel"
+              },
+              "createdAt": {
+                "type": "date",
+                "example": "2022-10-23T07:55:25.547Z"
+              },
+              "updatedAt": {
+                "type": "date",
+                "example": "2022-10-23T08:07:38.721Z"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+} 
+
